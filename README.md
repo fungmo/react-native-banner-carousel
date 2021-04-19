@@ -19,21 +19,30 @@ $ npm install --save react-native-banner-carousel
 ## Usage
 
 ```js    
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Carousel from 'react-native-banner-carousel';
 import { StyleSheet, Image, View, Dimensions } from 'react-native';
 
-const BannerWidth = Dimensions.get('window').width;
-const BannerHeight = 260;
 
-const images = [
-    "http://xxx.com/1.png",
-    "http://xxx.com/2.png",
-    "http://xxx.com/3.png"
-];
 
-export default class App extends React.Component {
-    renderPage(image, index) {
+export const BanerSwiper = () => {
+
+    const BannerWidth = Dimensions.get('window').width;
+    const BannerHeight = 260;
+
+    const [images, set_images] = useState(Array)
+
+    useEffect(() => {
+        set_images([
+            "https://smapse.com/storage/2018/03/admiral-farragut-academy-sport.jpg",
+            "https://smapse.com/storage/2018/03/admiral-farragut.jpg",
+            "https://smapse.com/storage/2018/03/akademiya-admiral-farragut.jpg"
+        ])
+    }, [])
+
+    console.log('images：', images)
+
+    const renderPage = (image: string, index: React.Key | null | undefined) => {
         return (
             <View key={index}>
                 <Image style={{ width: BannerWidth, height: BannerHeight }} source={{ uri: image }} />
@@ -41,28 +50,27 @@ export default class App extends React.Component {
         );
     }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <Carousel
-                    autoplay
-                    autoplayTimeout={5000}
-                    loop
-                    index={0}
-                    pageSize={BannerWidth}
-                >
-                    {images.map((image, index) => this.renderPage(image, index))}
-                </Carousel>
-            </View>
-        );
-    }
+
+    return (
+        <View style={styles.container}>
+            <Carousel
+                autoplay
+                autoplayTimeout={5000}
+                loop
+                index={0}
+                pageSize={BannerWidth}
+            >
+                {images.map((image, index) => { return (renderPage(image, index)) })}
+            </Carousel>
+        </View>
+    );
+
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        justifyContent: 'center'
     },
 });
 ```
